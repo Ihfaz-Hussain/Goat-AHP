@@ -1,30 +1,28 @@
 # Python virtual environment
 .venv/
+venv/
 
-# PostgreSQL credentials
+# Environment variables and secrets
 .env
 .env.*
 !.env.example
 
 # Python cache
 __pycache__/
-*.pyc
+*.py[cod]
 
-# Jupyter checkpoints
+# Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Local SQLite databases
+# Local databases
 *.db
+*.sqlite
+*.sqlite3
 
-# Temporary files
+# Temporary files and logs
 *.log
+*.tmp
 
-# Secrets and environment configuration
-.env
-.env.*
-!.env.example
-
-# Python environment
-.venv/
-__pycache__/
-*.pyc
+# Operating system files
+.DS_Store
+Thumbs.db
