@@ -1,0 +1,20 @@
+# Python virtual environment
+.venv/
+
+# PostgreSQL credentials
+.env
+.env.*
+!.env.example
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Local SQLite databases
+*.db
+
+# Temporary files
+*.log
