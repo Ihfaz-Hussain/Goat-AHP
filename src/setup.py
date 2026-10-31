@@ -1,20 +1,34 @@
-import sqlite3
-from pathlib import Path
+import os 
+import psycopg2 
+from dotenv import load_dotenv
 
-ROOT = Path(__file__).resolve().parents[2]
+load_dotenv()
 
-schema_path = (
-    ROOT / "data" / "database" / "football_schema.sql"
-)
+#get database cofiguration from environment variables
+db_host = os.getenv("DB_HOST")
+db_port = os.getenv("DB_PORT")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_name = os.getenv("DB_NAME")
 
-database_path = (
-    ROOT / "data" / "database" / "football.db"
-)
+#Establish a connection to the database
+try:
+    connection = psycopg2.connect(
+        host=db_host,
+        port=db_port,
+        user=db_user,
+        password=db_password,
+        dbname=db_name
+    )
+    print("Database connection established successfully.")
 
-with sqlite3.connect(database_path) as conn:
-    conn.execute("PRAGMA foreign_keys = ON")
-
-    with open(schema_path, encoding="utf-8") as f:
-        conn.executescript(f.read())
-
-print("Football database created successfully!")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT current_database();")
+        result = cursor.fetchone()
+        print(f"Connected to database: {result[0]}")
+except psycopg2.Error as e:
+    print(f"Error connecting to the database: {e}")
+finally:
+    if connection is not None:
+        connection.close()
+        print("Database connection closed.")
