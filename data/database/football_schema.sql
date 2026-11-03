@@ -1,9 +1,8 @@
 
--- GOAT-AHP Football Database
--- PostgreSQL Schema
+-- GOAT-AHP PostgreSQL Database Schema
 
 -- 1. Players
-CREATE TABLE IF NOT EXISTS players (
+CREATE TABLE IF NOT EXISTS public.players (
     player_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     player_name VARCHAR(150) NOT NULL,
     nationality VARCHAR(100),
@@ -12,7 +11,7 @@ CREATE TABLE IF NOT EXISTS players (
 );
 
 -- 2. Clubs
-CREATE TABLE IF NOT EXISTS clubs (
+CREATE TABLE IF NOT EXISTS public.clubs (
     club_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     api_football_id INTEGER UNIQUE,
     club_name VARCHAR(150) NOT NULL,
@@ -20,7 +19,7 @@ CREATE TABLE IF NOT EXISTS clubs (
 );
 
 -- 3. Competitions
-CREATE TABLE IF NOT EXISTS competitions (
+CREATE TABLE IF NOT EXISTS public.competitions (
     competition_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     api_football_id INTEGER UNIQUE,
     competition_name VARCHAR(150) NOT NULL,
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS competitions (
 );
 
 -- 4. Matches
-CREATE TABLE IF NOT EXISTS matches (
+CREATE TABLE IF NOT EXISTS public.matches (
     match_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     api_football_id INTEGER UNIQUE,
     competition_id BIGINT NOT NULL,
@@ -41,17 +40,17 @@ CREATE TABLE IF NOT EXISTS matches (
     away_goals INTEGER,
 
     FOREIGN KEY (competition_id)
-        REFERENCES competitions(competition_id),
+        REFERENCES public.competitions(competition_id),
 
     FOREIGN KEY (home_club_id)
-        REFERENCES clubs(club_id),
+        REFERENCES public.clubs(club_id),
 
     FOREIGN KEY (away_club_id)
-        REFERENCES clubs(club_id)
+        REFERENCES public.clubs(club_id)
 );
 
 -- 5. Historical Club Elo Ratings
-CREATE TABLE IF NOT EXISTS club_elo_history (
+CREATE TABLE IF NOT EXISTS public.club_elo_history (
     elo_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     club_id BIGINT NOT NULL,
     match_id BIGINT,
@@ -60,10 +59,10 @@ CREATE TABLE IF NOT EXISTS club_elo_history (
     model_version VARCHAR(30) NOT NULL,
 
     FOREIGN KEY (club_id)
-        REFERENCES clubs(club_id),
+        REFERENCES public.clubs(club_id),
 
     FOREIGN KEY (match_id)
-        REFERENCES matches(match_id),
+        REFERENCES public.matches(match_id),
 
     UNIQUE (club_id, match_id, model_version)
 );
