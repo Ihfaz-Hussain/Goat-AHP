@@ -66,3 +66,33 @@ CREATE TABLE IF NOT EXISTS public.club_elo_history (
 
     UNIQUE (club_id, match_id, model_version)
 );
+
+
+
+CREATE TABLE IF NOT EXISTS public.player_season_stats (
+    stat_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+
+    player_id BIGINT NOT NULL,
+    club_id BIGINT NOT NULL,
+    competition_id BIGINT NOT NULL,
+
+    season VARCHAR(20) NOT NULL,
+    appearances INTEGER,
+    minutes_played INTEGER,
+    goals INTEGER,
+    assists INTEGER,
+
+    source_name VARCHAR(100),
+    last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (player_id)
+        REFERENCES public.players(player_id),
+
+    FOREIGN KEY (club_id)
+        REFERENCES public.clubs(club_id),
+
+    FOREIGN KEY (competition_id)
+        REFERENCES public.competitions(competition_id),
+
+    UNIQUE (player_id, club_id, competition_id, season)
+);
